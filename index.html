@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+<script src="https://www.w3schools.com/appml/2.0.3/appml.js"></script>
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<style>
+  body{
+    display:flex;
+    flex-direction:column;
+    justify-content: center;
+    align-items: center;
+    height:100vh;
+
+  }
+  table{
+    margin-top:2em;
+    max-width:50%;
+  }
+</style>
+<body>
+
+<canvas id="myChart" style="width:100%;max-width:600px"></canvas>
+<table appml-data= "data" class="w3-table-all w3-centered w3-hoverable w3-card-4">
+  <tr class="w3-hover-orange">
+    <th>Name</th><th>Points</th><th>Challenged</th>
+  </tr>
+  <tr appml-repeat="challengers" class="w3-hover-green">
+    <td>{{name}}</td>
+    <td>{{points}}</td>
+    <td><span class="check w3-hoverable" data-set="{{design}}">{{design}} Designs </span>|<span class="check" data-set="{{database}}"> {{database}} Databases</span> | <span class="check" data-set="{{function}}">{{function}} Functions</span></td>
+  </tr>
+</table>
+<script>
+  window.onload = ()=>{
+    let spans = document.querySelectorAll(".check").forEach((elem)=>{
+      if(elem.getAttribute("data-set") <= 10){
+        elem.classList.add("w3-text-red");
+      }else if(elem.getAttribute("data-set") >= 10 && elem.getAttribute("data-set") < 25){
+        elem.classList.add("w3-text-orange");
+      }else if (elem.getAttribute("data-set") >= 25){
+        elem.classList.add("w3-text-green");
+      }
+    });
+  }
+  var goran = new Object;
+  goran.design = 0;
+  goran.database = 0;
+  goran.function = 0;
+
+  var hassan = new Object;
+  hassan.design = 0;
+  hassan.database = 0;
+  hassan.function = 0;
+
+  var mostapha = new Object;
+  mostapha.design = 0;
+  mostapha.database = 0;
+  mostapha.function = 0;
+
+  var  waad = new Object;
+  waad.design = 0;
+  waad.database = 0;
+  waad.function = 0;
+
+  function total (){
+    sum = 0;
+    for(let i = 0; i < arguments.length; i++){
+      sum += arguments[i];
+    }
+    return sum;
+  }
+  var data = {
+    "challengers":[
+      {"name": "Goran", "points": total(goran.design, goran.database, goran.function), "design": goran.design, "database": goran.database, "function": goran.function},
+      {"name": "Hassan", "points": total(hassan.design, hassan.database, hassan.function), "design": hassan.design, "database": hassan.database, "function": hassan.function},
+      {"name": "Mostapha", "points": total(mostapha.design, mostapha.database, mostapha.function), "design": mostapha.design, "database": mostapha.database, "function": mostapha.function},
+      {"name": "Waad", "points": total(waad.design, waad.database, waad.function), "design": waad.design, "database": waad.database, "function": waad.function}
+    ]
+  };
+var xValues = ["Goran", "Hassan", "Mostapha", "Waad"];
+var yValues = [total(goran.design, goran.database, goran.function), total(hassan.design, hassan.database, hassan.function), total(mostapha.design, mostapha.database, mostapha.function), total(waad.design, waad.database, waad.function)];
+var barColors = ["tomato", "darkgreen","midnightblue","black"];
+
+new Chart("myChart", {
+  type: "bar",
+  data: {
+    labels: xValues,
+    datasets: [{
+      backgroundColor: barColors,
+      borderWidth:2,
+      borderColor: '#777',
+      hoverBorderWidth:3,
+      hoverBorderColor:"#000",
+      data: yValues
+    }]
+  },
+  options: {
+    legend: {display: false},
+    title: {
+      display: true,
+      text: "Challengers"
+    }
+  }
+});
+</script>
+
+</body>
+</html>
